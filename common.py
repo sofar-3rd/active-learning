@@ -2,6 +2,7 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
+# 将标签转换为 onehot 编码
 def to_categorical(y, num_classes=None):
     y = np.array(y, dtype='int').ravel()
     if not num_classes:

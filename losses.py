@@ -39,6 +39,8 @@ class TripletLoss(nn.Module):
         anchor = features[:pass_size]
         positive = features[pass_size:pass_size*2]
         negative = features[pass_size*2:]
+        # torch.linalg.norm 计算张量的范数
+        # 特征向量数组被分为三等份，分别为锚点、正样本、负样本，计算正样本之间的距离损失以及正负样本之间的距离损失。
         positive_losses = torch.maximum(torch.tensor(1e-10), torch.linalg.norm(anchor - positive, ord = 2, dim = 1))
         negative_losses = torch.maximum(torch.tensor(0), margin - torch.linalg.norm(anchor - negative, ord = 2, dim = 1))
 
@@ -125,6 +127,7 @@ class HiDistanceLoss(nn.Module):
 
         batch_size = features.shape[0]
 
+        # contiguous 是深拷贝
         labels = labels.contiguous().view(-1, 1)
         if labels.shape[0] != batch_size:
             raise ValueError('Num of labels does not match num of features')

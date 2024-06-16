@@ -225,6 +225,8 @@ def main():
 
     MODEL_DIR = os.path.join(SAVED_MODEL_FOLDER, train_dataset_name)
     utils.create_folder(MODEL_DIR)
+
+    # 设定优化器以及模型名称
     if args.encoder == 'mlp':
         # set Adam optimizer
         mlp_optimizer = torch.optim.Adam(encoder.parameters(), lr=args.mlp_lr)
@@ -260,8 +262,12 @@ def main():
                                     f'_{args.sampler}_b{args.bsize}_e{args.epochs}_mdate{args.mdate}.pth')
         logging.info(f'Initial encoder model: ENC_MODEL_PATH {ENC_MODEL_PATH}')
     
+
+    # 特征
     X_train_final = X_train
+    # 恶意家族标签
     y_train_final = y_train
+    # 二元标签
     y_train_binary_final = y_train_binary
     upsample_values = None
     
@@ -274,6 +280,7 @@ def main():
 
     # if we are training our own model
     # make all singleton families the same as "unknown"
+    # 移除数量为 1 的恶意代码样本
     if args.encoder != None and args.encoder.startswith('simple-enc-mlp') == True:
         counted_y_train = Counter(y_train)
         singleton_families = [family for family, count in counted_y_train.items() if count == 1]

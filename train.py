@@ -214,6 +214,7 @@ def train_encoder(args, encoder, X_train, y_train, y_train_binary,
     best_loss = np.inf
     for epoch in range(1, total_epochs + 1):
         if adjust == True:
+            # 训练初始模型时会调整学习率，重复训练则不会调整参数
             # only adjust learning rate when training the initial model.
             # retraining assigns sample weight so we are not adjust learning rates.
             new_lr = adjust_learning_rate(args, optimizer, epoch, warm = warm)

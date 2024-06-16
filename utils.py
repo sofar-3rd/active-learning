@@ -94,10 +94,12 @@ def parse_args():
     # arguments for the Encoder Classifier model.
     p.add_argument('--enc-hidden',
                 help='The hidden layers of the encoder, example: "512-128-32"')
+    # batch size
     p.add_argument('--bsize', default=None, type=int,
                    help='Training batch size.')
     p.add_argument('--plb', default=None, type=int,
                    help='Pseudo loss batch size.')
+    # 每个 batch size 中每个类的样本数量
     p.add_argument('--sample-per-class', default=2, type=int,
                    help='Number of samples for each class in a batch.')
     p.add_argument('--min-per-class', default=2, type=int,
@@ -149,6 +151,7 @@ def parse_args():
                    help='Contrastive Autoencoder epochs.')
     p.add_argument('--cae-lambda', default=1e-1, type=float,
                    help='lambda in the loss function of contrastive autoencoder.')
+    # 计算损失时使用，非相似样本的最大距离
     p.add_argument('--margin', default=10.0, type=float,
                     help='Maximum margins of dissimilar samples when training contrastive autoencoder.')
     p.add_argument('--display-interval', default=10, type=int,
