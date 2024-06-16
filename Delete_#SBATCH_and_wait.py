@@ -1,6 +1,8 @@
 import os
 
 # 指定总目录
+# D:\emiya\GraduationThesis\code\active-learning\
+
 root_directory = '/XXXX/active-learning-master/experiments/020_revision'
 
 # 定义一个函数来处理.sh文件

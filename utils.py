@@ -14,13 +14,18 @@ def parse_args():
     """
     p = argparse.ArgumentParser()
 
+    # 数据集
     p.add_argument('--data', help='The dataset to use.')
+    # 不同时期的编码器
     p.add_argument('--mdate', help='Encoder model date to use.')
+    # 不同时期的分类模型
     p.add_argument('--clsdate', help='Classifier model date to use.')
 
     p.add_argument('--train', default=None, help='Train month. e.g., 2012-01')
     p.add_argument('--train_start', default=None, help='Train start month. e.g., 2012-01')
     p.add_argument('--train_end', default=None, help='Train end month. e.g., 2012-12')
+
+    # 将良性软件的标签设置为 0
     p.add_argument('--benign_zero', action='store_true', help='Whether assign benign class as the 0 label.')
 
     p.add_argument('--test_start', help='First test month.')
@@ -224,9 +229,11 @@ def adjust_learning_rate(args, optimizer, epoch, warm = False):
     if args.scheduler == 'cosine':
         # eta_min = 1e-11
         eta_min = 0
+        # 余弦退火
         lr = eta_min + (lr - eta_min) * (
                 1 + math.cos(math.pi * epoch / args.epochs)) / 2
     elif args.scheduler == 'step':
+        # 将 lr_decay_epochs 转换为数组并比较当前 epoch 与每个数的大小并返回下降的次数
         steps = np.sum(epoch > np.asarray(args.lr_decay_epochs))
         if steps > 0:
             lr = lr * (args.lr_decay_rate ** steps)

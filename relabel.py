@@ -108,6 +108,7 @@ def main():
     """
     args = utils.parse_args()
 
+    # 获取学习率调整的epoch
     start_epoch, end_epoch, step = args.lr_decay_epochs.split(',')
     args.lr_decay_epochs = list([range(int(start_epoch), int(end_epoch), int(step))])
 
@@ -140,6 +141,7 @@ def main():
     else:
         X_train, y_train, y_train_family = data.load_range_dataset_w_benign(args.data, args.train_start, args.train_end)
         # all_train_family has 'benign'
+        # 将 label 为 0 的软件的家族设置为 benign 
         ben_len = X_train.shape[0] - y_train_family.shape[0]
         y_ben_family = np.full(ben_len, 'benign')
         all_train_family = np.concatenate((y_train_family, y_ben_family), axis=0)

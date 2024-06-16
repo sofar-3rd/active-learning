@@ -292,4 +292,4 @@ dependencies:
       - torchmetrics==0.11.0
       - torchsummary==1.5.1
       - xgboost==1.7.3
-prefix: /home/yz/miniconda3/envs/apkencoder
+# prefix: /home/yz/miniconda3/envs/apkencoder

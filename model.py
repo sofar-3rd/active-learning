@@ -25,9 +25,11 @@ class SimpleEncClassifier(nn.Module):
         # encoded features layer. no activation.
         self.encoder_modules.append(nn.Linear(self.enc_dims[-2], self.enc_dims[-1]))
 
+        # 论文中的编码器（encoder）使用 512-384-256-128 的编码器，每层中间添加一个 ReLU 非线性激活单元
         # encoder model
         self.encoder_model = nn.Sequential(*(self.encoder_modules))
 
+        # 全连接层使用含有两个一百个神经单元的隐藏层，中间夹带 ReLU 非线性激活单元，最后接一个 softmax。
         # MLP
         m_stacks = len(self.mlp_dims) - 1
         for i in range(m_stacks - 1):
