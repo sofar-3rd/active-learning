@@ -136,14 +136,22 @@ class HiDistanceLoss(nn.Module):
         # mask_{i,j}=1 if sample j has the same class as sample i.
         binary_labels = binary_cat_labels[:, 1].view(-1, 1)
         # mask: both malware, or both benign
+        # binary_mask size: (n, n) which binary_mask[i][j] is i(th) == j(th)
+        # 若 binary_mask[i][j] 为 true, 表示样本同属一个类别
         binary_mask = torch.eq(binary_labels, binary_labels.T).float().to(device)
+        
         # multi_mask: same malware family, or benign
+        # 若 multi_mask[i][j] 为 true, 表示样本同属一个家族
         multi_mask = torch.eq(labels, labels.T).float().to(device)
+
         # malware but not the same family. does not have benign.
+        # 表示不同家族的恶意样本
         other_mal_mask = binary_mask - multi_mask
+        
         # both benign samples
         ben_labels = torch.logical_not(binary_labels).float().to(device)
         same_ben_mask = torch.matmul(ben_labels, ben_labels.T)
+        
         # same malware family mask
         same_mal_fam_mask = multi_mask - same_ben_mask
         
@@ -166,6 +174,7 @@ class HiDistanceLoss(nn.Module):
         # logging.debug(f'same_mal_fam_mask = multi_mask - same_ben_mask {same_mal_fam_mask}')
         
         # dissimilar mask. malware vs benign binary labels
+        # binary_negate_mask[i][j] = true 时表示样本i和样本j不属于同一个大类
         binary_negate_mask = torch.logical_not(binary_mask).float().to(device)
         # multi_negate_mask = torch.logical_not(multi_mask).float().to(device)
 
